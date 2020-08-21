@@ -14,35 +14,20 @@ import { useHistory } from "react-router-dom"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
 import FirebaseService from "../../services/firebaseService"
+import {
+  validarCampoCategorias,
+  validarCampoObrigatorio,
+} from "../../utils/validate"
 
-function validarCampoObrigatorio(value) {
-  let error
-  if (!value) {
-    error = "Campo obrigatório"
-  }
-  return error
-}
-
-function validarCategorias(value) {
-  let error
-  if (!value || value.length === 0) {
-    error = "Selecione pelo menos uma categoria"
-  }
-  return error
-}
-
-export default function Nova({ ...rest }) {
+export default function Formulario({ receita }) {
+  const animatedComponents = makeAnimated()
+  const isEdit = receita != null
   const [categoriasOptions, setCategorias] = useState([])
-
-  useEffect(() => {
-    FirebaseService.getDataList("categorias", (dataReceived) => {
-      setCategorias([...dataReceived])
-    })
-  }, [])
+  const [isLoaded, setIsLoaded] = useState(false)
+  const categoriasOriginais = []
 
   const toast = useToast()
   const history = useHistory()
-  const animatedComponents = makeAnimated()
 
   function salvarReceita(values, actions) {
     const { name, ingredientes, formaPreparo } = values
@@ -52,36 +37,65 @@ export default function Nova({ ...rest }) {
       categoriasSelecionadas.push(categoria.key)
     )
 
-    FirebaseService.pushData("receitas", {
-      name,
-      ingredientes,
-      formaPreparo,
-      categoriasSelecionadas,
-    })
+    if (isEdit) {
+      FirebaseService.updateData(receita.key, "receitas", {
+        name,
+        ingredientes,
+        formaPreparo,
+        categoriasSelecionadas,
+      })
+    } else {
+      FirebaseService.pushData("receitas", {
+        name,
+        ingredientes,
+        formaPreparo,
+        categoriasSelecionadas,
+      })
+    }
 
     toast({
       title: "Sucesso",
-      description: "Receita salva com sucesso.",
+      description: isEdit
+        ? "Receita atualizada com sucesso."
+        : "Receita Salva com Sucesso",
       status: "success",
       duration: 9000,
       isClosable: true,
     })
 
     actions.setSubmitting(false)
-    history.push("/")
+    if (isEdit) {
+      history.goBack()
+    } else {
+      history.push("/")
+    }
   }
 
+  useEffect(() => {
+    FirebaseService.getDataList("categorias", (dataReceived) => {
+      setCategorias([...dataReceived])
+
+      if (isEdit) {
+        receita.categoriasSelecionadas.forEach((cat) => {
+          const categoriaFound = dataReceived.find((c) => c.key === cat)
+          categoriasOriginais.push(categoriaFound)
+        })
+        setIsLoaded(true)
+      }
+    })
+  }, [])
+
   return (
-    <Box p={5} shadow="md" borderWidth="1px" {...rest} m={2}>
+    <Box p={5} shadow="md" borderWidth="1px" m={2}>
       <Heading fontSize="xl" marginBottom={5}>
-        Nova Receita
+        {isEdit ? "Editar Receita" : "Nova Receita"}
       </Heading>
       <Formik
         initialValues={{
-          name: "",
-          ingredientes: "",
-          formaPreparo: "",
-          categorias: [],
+          name: isEdit ? receita.name : "",
+          ingredientes: isEdit ? receita.ingredientes : "",
+          formaPreparo: isEdit ? receita.formaPreparo : "",
+          categorias: isEdit ? categoriasOriginais : [],
         }}
         onSubmit={salvarReceita}
       >
@@ -132,7 +146,7 @@ export default function Nova({ ...rest }) {
               )}
             </Field>
 
-            <Field name="categorias" validate={validarCategorias}>
+            <Field name="categorias" validate={validarCampoCategorias}>
               {({ field, form }) => (
                 <FormControl
                   isInvalid={form.errors.categorias && form.touched.categorias}

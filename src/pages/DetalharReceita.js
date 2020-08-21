@@ -1,15 +1,14 @@
 import React from "react"
-import { useParams } from "react-router-dom"
 import Menu from "../components/Menu"
 import Detalhar from "../components/receitas/Detalhar"
 
-export default function DetalharReceita() {
-  const { id } = useParams()
+export default function DetalharReceita({ location }) {
+  const { receita } = location.state
 
   return (
     <>
       <Menu />
-      <Detalhar id={id} />
+      <Detalhar receita={receita} />
     </>
   )
 }

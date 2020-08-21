@@ -50,6 +50,7 @@ export default class FirebaseService {
     const items = []
     snapshot.forEach((childSnapshot) => {
       const item = childSnapshot.val()
+      item.categoriasDaReceita = []
       item.key = childSnapshot.key
       items.push(item)
     })
@@ -64,5 +65,9 @@ export default class FirebaseService {
     const id = firebaseDatabase.ref(node).push().key
     ref.set(objToSubmit)
     return id
+  }
+
+  static updateData = (id, node, obj) => {
+    return firebaseDatabase.ref(`${node}/${id}`).set({ ...obj })
   }
 }

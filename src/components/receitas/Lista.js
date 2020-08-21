@@ -46,7 +46,12 @@ export default function Lista() {
             p={3}
             mt={5}
           >
-            <Link to={`/receitas/${receita.key}`}>
+            <Link
+              to={{
+                pathname: `/receitas/${receita.key}`,
+                state: { receita },
+              }}
+            >
               <Heading as="h4" size="md" color="white" mb={3}>
                 {receita.name.toUpperCase()}
               </Heading>
@@ -55,6 +60,7 @@ export default function Lista() {
                   const categoriaCompleta = categorias.find(
                     (c) => c.key === categoria
                   )
+
                   return (
                     <Badge key={categoria} variantColor="purple">
                       {categoriaCompleta.name}

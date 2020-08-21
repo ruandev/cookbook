@@ -1,50 +1,45 @@
-import { Box, Heading, Spinner, Text } from "@chakra-ui/core"
-import React, { useEffect, useState } from "react"
-import FirebaseService from "../../services/firebaseService"
+import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/core"
+import React from "react"
+import { FiEdit3 } from "react-icons/fi"
+import { Link } from "react-router-dom"
 
-export default function Detalhar({ id }) {
-  const [receita, setReceita] = useState({})
-  const [isLoaded, setIsLoaded] = useState(false)
-
-  useEffect(() => {
-    FirebaseService.getUniqueDataBy("receitas", id, (dataReceived) => {
-      setReceita(dataReceived)
-      setIsLoaded(true)
-    })
-  }, [id])
-
+export default function Detalhar({ receita }) {
   return (
-    <>
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-        display={isLoaded ? "none" : "block"}
-        m={10}
-      />
-      <Box
-        m={2}
-        p={5}
-        shadow="md"
-        borderWidth="1px"
-        display={!isLoaded ? "none" : "block"}
-      >
-        <Heading fontSize="xl" mb={5}>
-          {receita.name && receita.name.toUpperCase()}
-        </Heading>
-        <Heading fontSize="sm" mb={1}>
-          Ingredientes
-        </Heading>
-        <Text mb={10} whiteSpace="break-spaces">
-          {receita.ingredientes}
-        </Text>
-        <Heading fontSize="sm" marginBottom={1}>
-          Modo de Preparo
-        </Heading>
-        <Text>{receita.formaPreparo}</Text>
-      </Box>
-    </>
+    <Box m={2} p={5} shadow="md" borderWidth="1px">
+      <Flex justifyContent="space-between" alignItems="center" mb={3}>
+        <Heading fontSize="xl">{receita.name && receita.name.toUpperCase()}</Heading>
+
+        <Link
+          to={{
+            pathname: `/receitas/${receita.key}/editar`,
+            state: {
+              receita,
+            },
+          }}
+          style={{
+            width: "32px",
+          }}
+        >
+          <IconButton
+            variant="outline"
+            variantColor="blue"
+            aria-label="Ir para Página Inicial"
+            icon={FiEdit3}
+            size="sm"
+            mr={5}
+          />
+        </Link>
+      </Flex>
+      <Heading fontSize="sm" mb={1}>
+        Ingredientes
+      </Heading>
+      <Text mb={10} whiteSpace="break-spaces">
+        {receita.ingredientes}
+      </Text>
+      <Heading fontSize="sm" marginBottom={1}>
+        Modo de Preparo
+      </Heading>
+      <Text>{receita.formaPreparo}</Text>
+    </Box>
   )
 }
