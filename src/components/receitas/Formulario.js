@@ -5,6 +5,7 @@ import {
   FormErrorMessage,
   Heading,
   Input,
+  Spinner,
   Textarea,
   useToast,
 } from "@chakra-ui/core"
@@ -86,101 +87,118 @@ export default function Formulario({ receita }) {
   }, [])
 
   return (
-    <Box p={5} shadow="md" borderWidth="1px" m={2}>
-      <Heading fontSize="xl" marginBottom={5}>
-        {isEdit ? "Editar Receita" : "Nova Receita"}
-      </Heading>
-      <Formik
-        initialValues={{
-          name: isEdit ? receita.name : "",
-          ingredientes: isEdit ? receita.ingredientes : "",
-          formaPreparo: isEdit ? receita.formaPreparo : "",
-          categorias: isEdit ? categoriasOriginais : [],
-        }}
-        onSubmit={salvarReceita}
+    <>
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="blue.500"
+        size="xl"
+        display={isLoaded ? "none" : "block"}
+        m={10}
+      />
+      <Box
+        p={5}
+        shadow="md"
+        borderWidth="1px"
+        m={2}
+        display={!isLoaded ? "none" : "block"}
       >
-        {(props) => (
-          <Form>
-            <Field name="name" validate={validarCampoObrigatorio}>
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.name && form.touched.name}>
-                  <Input {...field} id="name" placeholder="Nome" />
-                  <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
+        <Heading fontSize="xl" marginBottom={5}>
+          {isEdit ? "Editar Receita" : "Nova Receita"}
+        </Heading>
+        <Formik
+          initialValues={{
+            name: isEdit ? receita.name : "",
+            ingredientes: isEdit ? receita.ingredientes : "",
+            formaPreparo: isEdit ? receita.formaPreparo : "",
+            categorias: isEdit ? categoriasOriginais : [],
+          }}
+          onSubmit={salvarReceita}
+        >
+          {(props) => (
+            <Form>
+              <Field name="name" validate={validarCampoObrigatorio}>
+                {({ field, form }) => (
+                  <FormControl isInvalid={form.errors.name && form.touched.name}>
+                    <Input {...field} id="name" placeholder="Nome" />
+                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-            <Field name="ingredientes" validate={validarCampoObrigatorio}>
-              {({ field, form }) => (
-                <FormControl
-                  isInvalid={form.errors.ingredientes && form.touched.ingredientes}
-                  mt={3}
-                >
-                  <Textarea
-                    {...field}
-                    id="ingredientes"
-                    placeholder="Ingredientes"
-                    resize="vertical"
-                    height={200}
-                  />
-                  <FormErrorMessage>{form.errors.ingredientes}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
+              <Field name="ingredientes" validate={validarCampoObrigatorio}>
+                {({ field, form }) => (
+                  <FormControl
+                    isInvalid={form.errors.ingredientes && form.touched.ingredientes}
+                    mt={3}
+                  >
+                    <Textarea
+                      {...field}
+                      id="ingredientes"
+                      placeholder="Ingredientes"
+                      resize="vertical"
+                      height={200}
+                    />
+                    <FormErrorMessage>{form.errors.ingredientes}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-            <Field name="formaPreparo" validate={validarCampoObrigatorio}>
-              {({ field, form }) => (
-                <FormControl
-                  isInvalid={form.errors.formaPreparo && form.touched.formaPreparo}
-                  mt={3}
-                >
-                  <Textarea
-                    {...field}
-                    id="formaPreparo"
-                    placeholder="Forma de Preparo"
-                    resize="vertical"
-                    height={200}
-                  />
-                  <FormErrorMessage>{form.errors.formaPreparo}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
+              <Field name="formaPreparo" validate={validarCampoObrigatorio}>
+                {({ field, form }) => (
+                  <FormControl
+                    isInvalid={form.errors.formaPreparo && form.touched.formaPreparo}
+                    mt={3}
+                  >
+                    <Textarea
+                      {...field}
+                      id="formaPreparo"
+                      placeholder="Forma de Preparo"
+                      resize="vertical"
+                      height={200}
+                    />
+                    <FormErrorMessage>{form.errors.formaPreparo}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-            <Field name="categorias" validate={validarCampoCategorias}>
-              {({ field, form }) => (
-                <FormControl
-                  isInvalid={form.errors.categorias && form.touched.categorias}
-                  mt={3}
-                >
-                  <Select
-                    id={field.name}
-                    type="text"
-                    value={form.values[field.name]}
-                    onChange={(option) => form.setFieldValue(field.name, option)}
-                    options={categoriasOptions}
-                    onBlur={form.handleBlur}
-                    isMulti
-                    placeholder="Categorias"
-                    components={animatedComponents}
-                    getOptionLabel={(option) => option.name}
-                    getOptionValue={(option) => option.key}
-                  />
-                  <FormErrorMessage>{form.errors.categorias}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
+              <Field name="categorias" validate={validarCampoCategorias}>
+                {({ field, form }) => (
+                  <FormControl
+                    isInvalid={form.errors.categorias && form.touched.categorias}
+                    mt={3}
+                  >
+                    <Select
+                      id={field.name}
+                      type="text"
+                      value={form.values[field.name]}
+                      onChange={(option) => form.setFieldValue(field.name, option)}
+                      options={categoriasOptions}
+                      onBlur={form.handleBlur}
+                      isMulti
+                      placeholder="Categorias"
+                      components={animatedComponents}
+                      getOptionLabel={(option) => option.name}
+                      getOptionValue={(option) => option.key}
+                    />
+                    <FormErrorMessage>{form.errors.categorias}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-            <Button
-              mt={4}
-              variantColor="teal"
-              isLoading={props.isSubmitting}
-              type="submit"
-            >
-              Salvar
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    </Box>
+              <Button
+                mt={4}
+                variantColor="teal"
+                isLoading={props.isSubmitting}
+                type="submit"
+              >
+                Salvar
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </>
   )
 }
