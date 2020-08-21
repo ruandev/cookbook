@@ -14,11 +14,10 @@ export default function Menu() {
         }}
       >
         <IconButton
-          variant="outline"
           variantColor="blue"
           aria-label="Ir para Página Inicial"
           icon={FaHome}
-          size="lg"
+          size="md"
           mr={5}
         />
       </NavLink>
@@ -28,7 +27,7 @@ export default function Menu() {
           display: "none",
         }}
       >
-        <Button variantColor="pink" size="lg" mr={5}>
+        <Button variantColor="pink" size="md" mr={5}>
           Nova Receita
         </Button>
       </NavLink>
@@ -38,7 +37,7 @@ export default function Menu() {
           display: "none",
         }}
       >
-        <Button variantColor="purple" size="lg">
+        <Button variantColor="purple" size="md">
           Categorias
         </Button>
       </NavLink>
