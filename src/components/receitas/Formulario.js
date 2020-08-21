@@ -81,8 +81,8 @@ export default function Formulario({ receita }) {
           const categoriaFound = dataReceived.find((c) => c.key === cat)
           categoriasOriginais.push(categoriaFound)
         })
-        setIsLoaded(true)
       }
+      setIsLoaded(true)
     })
   }, [])
 
