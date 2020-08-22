@@ -17,7 +17,6 @@ import {
 import { Field, Form, Formik, isEmptyArray } from "formik"
 import React, { useEffect, useState } from "react"
 import { FaFilter } from "react-icons/fa"
-import { Link } from "react-router-dom"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
 import FirebaseService from "../../services/firebaseService"
@@ -175,7 +174,7 @@ export default function Lista() {
       />
       <Flex p={2} pt={0} wrap="wrap" justifyContent="space-between">
         {receitas.map((receita) => (
-          <Box
+          <AccordionItem
             key={receita.key}
             width={{
               sm: "100%",
@@ -187,12 +186,7 @@ export default function Lista() {
             p={3}
             mt={5}
           >
-            <Link
-              to={{
-                pathname: `/receitas/${receita.key}`,
-                state: { receita },
-              }}
-            >
+            <AccordionHeader flexDirection="column" alignItems="start">
               <Heading as="h4" size="md" color="white" mb={3}>
                 {receita.name.toUpperCase()}
               </Heading>
@@ -209,11 +203,16 @@ export default function Lista() {
                   )
                 })}
               </Stack>
+            </AccordionHeader>
+            <AccordionPanel>
               <Text color="white" mt={3} whiteSpace="break-spaces">
                 {receita.ingredientes}
               </Text>
-            </Link>
-          </Box>
+              <Button variant="outline" w="100%" mt={2}>
+                Ver receita completa
+              </Button>
+            </AccordionPanel>
+          </AccordionItem>
         ))}
       </Flex>
     </>
