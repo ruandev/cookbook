@@ -209,7 +209,14 @@ export default function Lista() {
               <Text color="white" mt={3} whiteSpace="break-spaces">
                 {receita.ingredientes}
               </Text>
-              <Link to={`/receitas/${receita.key}`}>
+              <Link
+                to={{
+                  pathname: `/receitas/${receita.key}`,
+                  state: {
+                    receita,
+                  },
+                }}
+              >
                 <Button variant="outline" w="100%" mt={2}>
                   Ver receita completa
                 </Button>
