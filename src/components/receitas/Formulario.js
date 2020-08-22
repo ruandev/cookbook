@@ -103,6 +103,7 @@ export default function Formulario({ receita }) {
         borderWidth="1px"
         m={2}
         display={!isLoaded ? "none" : "block"}
+        backgroundColor="white"
       >
         <Heading fontSize="xl" marginBottom={5}>
           {isEdit ? "Editar Receita" : "Nova Receita"}

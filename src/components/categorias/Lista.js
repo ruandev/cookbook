@@ -12,7 +12,7 @@ export default function Lista({ ...rest }) {
   }, [])
 
   return (
-    <Box p={5} shadow="md" borderWidth="1px" {...rest}>
+    <Box p={5} shadow="md" borderWidth="1px" {...rest} backgroundColor="white">
       {categorias &&
         categorias.map((categoria) => (
           <Text key={categoria.name}>{categoria.name}</Text>

@@ -100,7 +100,7 @@ export default function Lista() {
 
   return (
     <>
-      <Box m={2} p={2} shadow="md" borderWidth="1px">
+      <Box m={2} p={2} shadow="md" borderWidth="1px" backgroundColor="white">
         <AccordionItem>
           <AccordionHeader _expanded={{ bg: "tomato", color: "white" }}>
             <Box flex="1" textAlign="left">

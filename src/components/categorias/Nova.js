@@ -42,7 +42,7 @@ export default function Nova({ ...rest }) {
   }
 
   return (
-    <Box p={5} shadow="md" borderWidth="1px" {...rest}>
+    <Box p={5} shadow="md" borderWidth="1px" {...rest} backgroundColor="white">
       <Heading fontSize="xl" marginBottom={5}>
         Nova Categoria
       </Heading>
