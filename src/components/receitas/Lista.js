@@ -17,6 +17,7 @@ import {
 import { Field, Form, Formik, isEmptyArray } from "formik"
 import React, { useEffect, useState } from "react"
 import { FaFilter } from "react-icons/fa"
+import { Link } from "react-router-dom"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
 import FirebaseService from "../../services/firebaseService"
@@ -208,9 +209,11 @@ export default function Lista() {
               <Text color="white" mt={3} whiteSpace="break-spaces">
                 {receita.ingredientes}
               </Text>
-              <Button variant="outline" w="100%" mt={2}>
-                Ver receita completa
-              </Button>
+              <Link to={`/receitas/${receita.key}`}>
+                <Button variant="outline" w="100%" mt={2}>
+                  Ver receita completa
+                </Button>
+              </Link>
             </AccordionPanel>
           </AccordionItem>
         ))}
