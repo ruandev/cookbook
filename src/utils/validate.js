@@ -13,3 +13,20 @@ export function validarCampoCategorias(value) {
   }
   return error
 }
+
+export function validarHttpURL(value) {
+  let error
+  let url
+
+  if (!value || value.length === 0) {
+    return error
+  }
+
+  try {
+    url = new URL(value)
+  } catch (_) {
+    error = "Coloque uma URL válida"
+  }
+
+  return error
+}

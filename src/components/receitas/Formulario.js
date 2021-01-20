@@ -18,6 +18,7 @@ import FirebaseService from "../../services/firebaseService"
 import {
   validarCampoCategorias,
   validarCampoObrigatorio,
+  validarHttpURL,
 } from "../../utils/validate"
 
 export default function Formulario({ receita }) {
@@ -31,7 +32,7 @@ export default function Formulario({ receita }) {
   const history = useHistory()
 
   function salvarReceita(values, actions) {
-    const { name, ingredientes, formaPreparo } = values
+    const { name, ingredientes, formaPreparo, link } = values
     const categoriasSelecionadas = []
 
     values.categorias.forEach((categoria) =>
@@ -44,6 +45,7 @@ export default function Formulario({ receita }) {
         ingredientes,
         formaPreparo,
         categoriasSelecionadas,
+        link,
       })
     } else {
       FirebaseService.pushData("receitas", {
@@ -51,6 +53,7 @@ export default function Formulario({ receita }) {
         ingredientes,
         formaPreparo,
         categoriasSelecionadas,
+        link,
       })
     }
 
@@ -184,6 +187,18 @@ export default function Formulario({ receita }) {
                       getOptionValue={(option) => option.key}
                     />
                     <FormErrorMessage>{form.errors.categorias}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              <Field name="link" validate={validarHttpURL}>
+                {({ field, form }) => (
+                  <FormControl
+                    isInvalid={form.errors.link && form.touched.link}
+                    mt={3}
+                  >
+                    <Input {...field} id="link" placeholder="Link" />
+                    <FormErrorMessage>{form.errors.link}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>

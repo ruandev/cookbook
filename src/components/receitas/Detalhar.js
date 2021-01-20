@@ -36,10 +36,18 @@ export default function Detalhar({ receita }) {
       <Text mb={10} whiteSpace="break-spaces">
         {receita.ingredientes}
       </Text>
-      <Heading fontSize="sm" marginBottom={1}>
+      <Heading fontSize="sm" mb={1}>
         Modo de Preparo
       </Heading>
-      <Text>{receita.formaPreparo}</Text>
+      <Text mb={10}>{receita.formaPreparo}</Text>
+      {receita.link != null && (
+        <>
+          <Heading fontSize="sm" mb={1}>
+            Link
+          </Heading>
+          <Text>{receita.link}</Text>
+        </>
+      )}
     </Box>
   )
 }
