@@ -117,6 +117,7 @@ export default function Formulario({ receita }) {
             ingredientes: isEdit ? receita.ingredientes : "",
             formaPreparo: isEdit ? receita.formaPreparo : "",
             categorias: isEdit ? categoriasOriginais : [],
+            link: isEdit ? receita.link : "",
           }}
           onSubmit={salvarReceita}
         >
